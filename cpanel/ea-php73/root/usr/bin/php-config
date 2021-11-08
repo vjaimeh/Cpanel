@@ -1,0 +1,90 @@
+#! /bin/sh
+
+SED="/bin/sed"
+prefix="/opt/cpanel/ea-php73/root/usr"
+datarootdir="/opt/cpanel/ea-php73/root/usr/share"
+exec_prefix="/opt/cpanel/ea-php73/root/usr"
+version="7.3.31"
+vernum="70331"
+include_dir="/opt/cpanel/ea-php73/root/usr/include/php"
+includes="-I$include_dir -I$include_dir/main -I$include_dir/TSRM -I$include_dir/Zend -I$include_dir/ext -I$include_dir/ext/date/lib"
+ldflags=" -L/opt/cpanel/ea-libxml2/lib64 -L/opt/cpanel/ea-openssl11/lib64 -L/opt/cpanel/libargon2/lib64"
+libs="-lcrypt   -largon2 -lresolv -lcrypt -ledit -lncurses -lstdc++ -lz -lcrypto -lssl -lcrypto -lrt -lm -ldl -lnsl  -lxml2 -lz -llzma -lm -ldl -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err -lcrypt -largon2 -lcrypt "
+extension_dir='/opt/cpanel/ea-php73/root/usr/lib64/php/modules'
+man_dir=`eval echo /opt/cpanel/ea-php73/root/usr/share/man`
+program_prefix=""
+program_suffix=""
+exe_extension=""
+php_cli_binary=NONE
+php_cgi_binary=NONE
+configure_options=" '--build=x86_64-redhat-linux-gnu' '--host=x86_64-redhat-linux-gnu' '--program-prefix=' '--disable-dependency-tracking' '--prefix=/opt/cpanel/ea-php73/root/usr' '--exec-prefix=/opt/cpanel/ea-php73/root/usr' '--bindir=/opt/cpanel/ea-php73/root/usr/bin' '--sbindir=/opt/cpanel/ea-php73/root/usr/sbin' '--sysconfdir=/opt/cpanel/ea-php73/root/etc' '--datadir=/opt/cpanel/ea-php73/root/usr/share' '--includedir=/opt/cpanel/ea-php73/root/usr/include' '--libdir=/opt/cpanel/ea-php73/root/usr/lib64' '--libexecdir=/opt/cpanel/ea-php73/root/usr/libexec' '--localstatedir=/opt/cpanel/ea-php73/root/var' '--sharedstatedir=/opt/cpanel/ea-php73/root/var/lib' '--mandir=/opt/cpanel/ea-php73/root/usr/share/man' '--infodir=/opt/cpanel/ea-php73/root/usr/share/info' '--cache-file=../config.cache' '--with-libdir=lib64' '--with-config-file-path=/opt/cpanel/ea-php73/root/etc' '--with-config-file-scan-dir=/opt/cpanel/ea-php73/root/etc/php.d' '--disable-debug' '--with-password-argon2=/opt/cpanel/libargon2' '--with-pic' '--without-pear' '--with-bz2' '--with-freetype-dir=/usr' '--with-png-dir=/usr' '--with-xpm-dir=/usr' '--enable-gd-native-ttf' '--without-gdbm' '--with-gettext' '--with-iconv' '--with-jpeg-dir=/usr' '--with-openssl=/opt/cpanel/ea-openssl11' '--with-openssl-dir=/opt/cpanel/ea-openssl11' '--with-zlib' '--with-layout=GNU' '--enable-exif' '--enable-ftp' '--enable-sockets' '--with-kerberos' '--enable-shmop' '--with-libxml-dir=/opt/cpanel/ea-libxml2' '--with-system-tzdata' '--with-mhash' '--libdir=/opt/cpanel/ea-php73/root/usr/lib64/php' '--enable-pcntl' '--enable-opcache' '--disable-opcache-file' '--enable-phpdbg' '--with-imap=shared,/opt/cpanel/ea-php73/root/usr' '--with-imap-ssl' '--enable-mbstring=shared' '--enable-mbregex' '--with-webp-dir=/usr' '--with-gd=shared' '--with-gmp=shared' '--enable-calendar=shared' '--enable-bcmath=shared' '--with-bz2=shared' '--enable-ctype=shared' '--enable-dba=shared' '--with-db4=/usr' '--with-tcadb=/usr' '--enable-exif=shared' '--enable-ftp=shared' '--with-gettext=shared' '--with-iconv=shared' '--enable-sockets=shared' '--enable-tokenizer=shared' '--with-xmlrpc=shared' '--with-ldap=shared' '--with-ldap-sasl' '--enable-mysqlnd=shared' '--with-mysqli=shared,mysqlnd' '--with-mysql-sock=/var/lib/mysql/mysql.sock' '--enable-dom=shared' '--with-pgsql=shared' '--enable-simplexml=shared' '--enable-xml=shared' '--enable-wddx=shared' '--with-snmp=shared,/usr' '--enable-soap=shared' '--with-xsl=shared,/usr' '--enable-xmlreader=shared' '--enable-xmlwriter=shared' '--with-curl=shared,/opt/cpanel/libcurl' '--enable-pdo=shared' '--with-pdo-odbc=shared,unixODBC,/usr' '--with-pdo-mysql=shared,mysqlnd' '--with-pdo-pgsql=shared,/usr' '--with-pdo-sqlite=shared,/usr' '--with-sqlite3=shared,/usr' '--enable-json=shared' '--without-libzip' '--enable-zip=shared' '--without-readline' '--with-libedit' '--with-pspell=shared' '--enable-phar=shared' '--with-tidy=shared,/opt/cpanel/libtidy' '--enable-sysvmsg=shared' '--enable-sysvshm=shared' '--enable-sysvsem=shared' '--enable-shmop=shared' '--enable-posix=shared' '--with-unixODBC=shared,/usr' '--enable-intl=shared' '--with-icu-dir=/usr' '--with-enchant=shared,/usr' '--with-recode=shared,/usr' '--enable-fileinfo=shared' 'build_alias=x86_64-redhat-linux-gnu' 'host_alias=x86_64-redhat-linux-gnu' 'CFLAGS=-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -m64 -mtune=generic -fno-strict-aliasing -Wno-pointer-sign' 'CXXFLAGS=-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -m64 -mtune=generic'"
+php_sapis=" cli phpdbg cgi"
+
+# Set php_cli_binary and php_cgi_binary if available
+for sapi in $php_sapis; do
+  case $sapi in
+  cli)
+    php_cli_binary="/opt/cpanel/ea-php73/root/usr/bin/${program_prefix}php${program_suffix}${exe_extension}"
+    ;;
+  cgi)
+    php_cgi_binary="/opt/cpanel/ea-php73/root/usr/bin/${program_prefix}php-cgi${program_suffix}${exe_extension}"
+    ;;
+  esac
+done
+
+# Determine which (if any) php binary is available
+if test "$php_cli_binary" != "NONE"; then
+  php_binary="$php_cli_binary"
+else
+  php_binary="$php_cgi_binary"
+fi
+
+# Remove quotes
+configure_options=`echo $configure_options | $SED -e "s#'##g"`
+
+case "$1" in
+--prefix)
+  echo $prefix;;
+--includes)
+  echo $includes;;
+--ldflags)
+  echo $ldflags;;
+--libs)
+  echo $libs;;
+--extension-dir)
+  echo $extension_dir;;
+--include-dir)
+  echo $include_dir;;
+--php-binary)
+  echo $php_binary;;
+--php-sapis)
+  echo $php_sapis;;
+--configure-options)
+  echo $configure_options;;
+--man-dir)
+  echo $man_dir;;
+--version)
+  echo $version;;
+--vernum)
+  echo $vernum;;
+*)
+  cat << EOF
+Usage: $0 [OPTION]
+Options:
+  --prefix            [$prefix]
+  --includes          [$includes]
+  --ldflags           [$ldflags]
+  --libs              [$libs]
+  --extension-dir     [$extension_dir]
+  --include-dir       [$include_dir]
+  --man-dir           [$man_dir]
+  --php-binary        [$php_binary]
+  --php-sapis         [$php_sapis]
+  --configure-options [$configure_options]
+  --version           [$version]
+  --vernum            [$vernum]
+EOF
+  exit 1;;
+esac
+
+exit 0
